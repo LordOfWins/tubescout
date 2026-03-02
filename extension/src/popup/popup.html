@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="popup.css">
+</head>
+<body>
+
+  <!-- ============================== -->
+  <!--  헤더: 로고 + 크레딧 배지       -->
+  <!-- ============================== -->
+  <header class="ts-header">
+    <div class="ts-header__left">
+      <img src="../assets/icon-32.png" alt="" class="ts-header__icon">
+      <span class="ts-header__title">TubeScout</span>
+    </div>
+    <div class="ts-header__right">
+      <span id="credits-badge" class="ts-badge ts-badge--default">
+        <span id="credits-count">--</span> credits
+      </span>
+    </div>
+  </header>
+
+  <!-- ============================== -->
+  <!--  뷰 1: 라이선스 미입력 (온보딩) -->
+  <!-- ============================== -->
+  <section id="view-onboarding" class="ts-view" hidden>
+    <div class="ts-card ts-card--center">
+      <h2 class="ts-card__title">Welcome to TubeScout</h2>
+      <p class="ts-card__desc">Enter your license key to unlock Pro/Ultra features, or continue with 20 free credits per month.</p>
+
+      <div class="ts-input-group">
+        <input
+          type="text"
+          id="license-input"
+          class="ts-input"
+          placeholder="XXXXX-XXXXX-XXXXX-XXXXX"
+          spellcheck="false"
+          autocomplete="off"
+        >
+        <button id="btn-activate" class="ts-btn ts-btn--primary">Activate</button>
+      </div>
+      <p id="license-error" class="ts-error" hidden></p>
+
+      <button id="btn-skip" class="ts-btn ts-btn--ghost">Continue with Free</button>
+    </div>
+  </section>
+
+  <!-- ============================== -->
+  <!--  뷰 2: 메인 대시보드            -->
+  <!-- ============================== -->
+  <section id="view-dashboard" class="ts-view" hidden>
+
+    <!-- 현재 비디오 카드 -->
+    <div id="video-card" class="ts-card">
+      <p class="ts-card__label">Current Video</p>
+      <h3 id="video-title" class="ts-card__title ts-card__title--truncate">No video detected</h3>
+      <div class="ts-card__meta">
+        <span id="video-channel" class="ts-meta"></span>
+        <span id="video-views" class="ts-meta"></span>
+      </div>
+    </div>
+
+    <!-- 기능 버튼 3개 -->
+    <div class="ts-actions">
+
+      <button id="btn-title" class="ts-action-btn" disabled>
+        <div class="ts-action-btn__top">
+          <span class="ts-action-btn__icon">✦</span>
+          <span class="ts-action-btn__label">Title Score</span>
+        </div>
+        <span class="ts-action-btn__cost">1 credit</span>
+      </button>
+
+      <button id="btn-tags" class="ts-action-btn" disabled>
+        <div class="ts-action-btn__top">
+          <span class="ts-action-btn__icon">#</span>
+          <span class="ts-action-btn__label">AI Tags</span>
+        </div>
+        <span class="ts-action-btn__cost">3 credits</span>
+      </button>
+
+      <button id="btn-channel" class="ts-action-btn" disabled>
+        <div class="ts-action-btn__top">
+          <span class="ts-action-btn__icon">◎</span>
+          <span class="ts-action-btn__label">Competitor</span>
+        </div>
+        <span class="ts-action-btn__cost">5 credits</span>
+      </button>
+
+    </div>
+
+    <!-- 결과 영역 -->
+    <div id="result-area" class="ts-result" hidden>
+      <div class="ts-result__header">
+        <span id="result-label" class="ts-result__label"></span>
+        <button id="btn-close-result" class="ts-btn ts-btn--icon">&times;</button>
+      </div>
+      <div id="result-content" class="ts-result__content">
+        <!-- AI 분석 결과가 여기에 동적 삽입 -->
+      </div>
+    </div>
+
+    <!-- 로딩 오버레이 -->
+    <div id="loading-overlay" class="ts-loading" hidden>
+      <div class="ts-spinner"></div>
+      <p class="ts-loading__text">Analyzing...</p>
+    </div>
+
+  </section>
+
+  <!-- ============================== -->
+  <!--  푸터: 요금제 + 설정            -->
+  <!-- ============================== -->
+  <footer class="ts-footer">
+    <span id="plan-label" class="ts-footer__plan">Free</span>
+    <div class="ts-footer__links">
+      <a id="link-upgrade" href="#" class="ts-footer__link">Upgrade</a>
+      <a id="link-settings" href="#" class="ts-footer__link">Settings</a>
+    </div>
+  </footer>
+
+  <script src="popup.js"></script>
+</body>
+</html>

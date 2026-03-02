@@ -1,0 +1,12 @@
+# 루트 gitignore
+node_modules/
+.venv/
+venv/
+.env
+.env.local
+__pycache__/
+*.pyc
+dist/
+*.zip
+.DS_Store
+Thumbs.db

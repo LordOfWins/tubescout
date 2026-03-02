@@ -1,0 +1,22 @@
+# fastapi, uvicorn, httpx, pydantic-settings
+# FastAPI + ASGI server
+fastapi==0.134.0
+uvicorn[standard]==0.34.0
+
+# Pydantic v2 + Settings
+pydantic==2.10.6
+pydantic-settings==2.13.1
+
+# Async HTTP client
+httpx==0.28.1
+
+# AI SDKs
+google-genai==1.5.0
+openai==1.68.0
+
+# Monitoring
+sentry-sdk==2.53.0
+
+# Utilities
+python-dotenv==1.1.0
+python-dateutil==2.9.0    # ★ 추가: relativedelta로 다음 달 1일 계산

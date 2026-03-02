@@ -1,0 +1,49 @@
+/* YouTube 페이지 내 삽입 UI 스타일 */
+/* ============================================================
+   TubeScout — YouTube 페이지 내 삽입 UI 스타일
+
+   이 파일은 YouTube DOM에 삽입되는 위젯의 스타일입니다.
+   YouTube 기존 스타일과 충돌하지 않도록:
+   1. 모든 클래스명에 tubescout- 접두사 사용
+   2. !important 최소화
+   3. 리셋은 위젯 루트에만 적용
+
+   구현 시점: 서버 AI 엔드포인트 완성 후
+   현재: 컨테이너 + 기본 토큰만 정의
+   ============================================================ */
+
+/* ── 위젯 루트 리셋 ── */
+
+.tubescout-widget {
+  all: initial;
+  display: block;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+  font-size: 13px;
+  line-height: 1.5;
+  color: #1a1a2e;
+  margin: 8px 0;
+  padding: 0;
+}
+
+.tubescout-widget * {
+  box-sizing: border-box;
+}
+
+/* ── 디자인 토큰 (CSS 변수) ── */
+
+.tubescout-widget {
+  --ts-primary: #6366f1;
+  --ts-primary-light: #ede9fe;
+  --ts-success: #16a34a;
+  --ts-warning: #ca8a04;
+  --ts-danger: #dc2626;
+  --ts-gray-50: #f9fafb;
+  --ts-gray-200: #e5e7eb;
+  --ts-gray-500: #6b7280;
+  --ts-gray-900: #111827;
+  --ts-radius: 8px;
+  --ts-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
+}
+
+/* ── 위젯 카드 (공통 컨테이너) ── */
+/* TODO: 서버 완성 후 점수 배지, 태그 영역, 분석 카드 스타일 추가 */
