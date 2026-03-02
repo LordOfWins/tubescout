@@ -4,17 +4,24 @@ YouTube 크리에이터용 AI 분석 도구 모노레포. **Private repository**
 
 ## 저장소 (Private)
 
-- 이 프로젝트는 비공개 저장소입니다.
-- 원격 저장소 생성 시 **Private**로 생성한 뒤 아래처럼 연결합니다.
+- **GitHub:** https://github.com/LordOfWins/tubescout (비공개, 푸시 완료)
+- **Codeberg:** 동일 코드를 Codeberg에도 푸시하려면 아래 절차를 따르세요.
 
-```text
-# GitHub 예시: New repository → Private 선택 후 생성
-git remote add origin https://github.com/YOUR_ORG/tubescout.git
-git branch -M main
-git add .
-git commit -m "Initial commit"
-git push -u origin main
-```
+### Codeberg에 처음 푸시하기
+
+1. https://codeberg.org 로그인 후 **New Repository** → 이름 `tubescout`, **Private** 선택 후 생성.
+2. Codeberg 사용자명이 GitHub과 다르면 원격 URL 수정:
+   ```bash
+   git remote set-url codeberg https://codeberg.org/YOUR_CODEBERG_USER/tubescout.git
+   ```
+3. 푸시:
+   ```bash
+   git push -u codeberg master
+   ```
+4. 이후 푸시는 `git push origin master` (GitHub), `git push codeberg master` (Codeberg) 각각 실행하거나, 두 원격에 한 번에 푸시하려면:
+   ```bash
+   git push origin master && git push codeberg master
+   ```
 
 ## 구조
 
