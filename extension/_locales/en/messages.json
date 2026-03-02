@@ -1,3 +1,10 @@
 {
-  "extensionName": { "message": "TubeScout" }
+  "extensionName": {
+    "message": "TubeScout",
+    "description": "Extension display name"
+  },
+  "extensionDescription": {
+    "message": "AI-powered YouTube title scorer, tag recommender & competitor analyzer for creators.",
+    "description": "Extension description for Chrome Web Store"
+  }
 }
