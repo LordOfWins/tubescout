@@ -1,8 +1,5 @@
 """
-app/main.py
-─────────────
-TubeScout FastAPI 서버 진입점.
-uvicorn app.main:app --reload 로 실행.
+app/main.py — TubeScout FastAPI 서버 진입점.
 """
 
 from __future__ import annotations
@@ -12,11 +9,12 @@ from contextlib import asynccontextmanager
 
 import httpx
 import sentry_sdk
-from app.config import Settings, get_settings
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from sentry_sdk.integrations.fastapi import FastApiIntegration
 from sentry_sdk.integrations.starlette import StarletteIntegration
+
+from app.config import Settings, get_settings
 
 logger = logging.getLogger("tubescout")
 
@@ -25,7 +23,6 @@ def _init_sentry(settings: Settings) -> None:
     if not settings.SENTRY_DSN:
         logger.warning("SENTRY_DSN이 비어 있어 Sentry를 초기화하지 않습니다.")
         return
-
     sentry_sdk.init(
         dsn=settings.SENTRY_DSN,
         environment=settings.ENVIRONMENT,
@@ -43,8 +40,6 @@ def _init_sentry(settings: Settings) -> None:
 @asynccontextmanager
 async def lifespan(app: FastAPI):
     settings = get_settings()
-
-    # ── startup ──────────────────────────────────────────────
     _init_sentry(settings)
 
     app.state.http_client = httpx.AsyncClient(
@@ -52,34 +47,26 @@ async def lifespan(app: FastAPI):
         limits=httpx.Limits(max_connections=100, max_keepalive_connections=20),
         headers={"User-Agent": f"TubeScout/{settings.APP_VERSION}"},
     )
-
     app.state.credits_cache: dict[str, dict] = {}
 
-    # AI 서비스 싱글턴
     from app.ai.service import AIService
     app.state.ai_service = AIService(settings=settings)
 
-    logger.info(
-        "%s v%s 시작 (env=%s)",
-        settings.APP_NAME, settings.APP_VERSION, settings.ENVIRONMENT,
-    )
+    logger.info("%s v%s 시작 (env=%s)", settings.APP_NAME, settings.APP_VERSION, settings.ENVIRONMENT)
 
     yield
 
-    # ── shutdown ─────────────────────────────────────────────
     ai_svc: AIService = app.state.ai_service
     if ai_svc._gemini_client:
         ai_svc._gemini_client.close()
     if ai_svc._openai_client:
         await ai_svc._openai_client.close()
-
     await app.state.http_client.aclose()
     logger.info("리소스 정리 완료")
 
 
 def create_app() -> FastAPI:
     settings = get_settings()
-
     app = FastAPI(
         title=settings.APP_NAME,
         version=settings.APP_VERSION,
@@ -87,7 +74,6 @@ def create_app() -> FastAPI:
         redoc_url="/redoc" if settings.DEBUG else None,
         lifespan=lifespan,
     )
-
     app.add_middleware(
         CORSMiddleware,
         allow_origins=settings.CORS_ORIGINS,
@@ -99,9 +85,9 @@ def create_app() -> FastAPI:
     from app.exceptions import register_exception_handlers
     register_exception_handlers(app)
 
-    from app.ai.router import router as ai_router
     from app.auth.router import router as auth_router
     from app.credits.router import router as credits_router
+    from app.ai.router import router as ai_router
     from app.webhooks.router import router as webhooks_router
 
     app.include_router(auth_router, prefix="/api/auth", tags=["Auth"])
@@ -109,13 +95,15 @@ def create_app() -> FastAPI:
     app.include_router(ai_router, prefix="/api", tags=["AI Analysis"])
     app.include_router(webhooks_router, prefix="/webhook", tags=["Webhooks"])
 
+    # DEBUG 모드에서만 테스트 라우터 등록
+    if settings.DEBUG:
+        from app.dev_test import router as dev_test_router
+        app.include_router(dev_test_router, prefix="/dev", tags=["Dev Test"])
+        logger.info("개발 테스트 라우터 활성화 (/dev/*)")
+
     @app.get("/health", tags=["System"])
     async def health_check():
-        return {
-            "status": "ok",
-            "version": settings.APP_VERSION,
-            "environment": settings.ENVIRONMENT,
-        }
+        return {"status": "ok", "version": settings.APP_VERSION, "environment": settings.ENVIRONMENT}
 
     return app
 
